@@ -1,4 +1,4 @@
-package com.ncorti.kotlin.gradle.template.plugin
+package com.harleyoconnor.translationsheet
 
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty

@@ -1,8 +1,8 @@
 plugins {
     java
-    id("com.ncorti.kotlin.gradle.template.plugin")
+    id("com.harleyoconnor.translationsheet")
 }
 
-templateExampleConfig {
+translationFilesGeneration {
     message.set("Just trying this gradle plugin...")
 }
