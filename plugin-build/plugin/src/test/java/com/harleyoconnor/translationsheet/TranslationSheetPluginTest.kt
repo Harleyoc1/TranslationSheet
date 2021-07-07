@@ -23,7 +23,7 @@ class TranslationSheetPluginTest {
     }
 
     @Test
-    fun `extension templateExampleConfig is created correctly`() {
+    fun `extension translationFilesGeneration is created correctly`() {
         val project = ProjectBuilder.builder().build()
         project.pluginManager.apply(ID)
 
