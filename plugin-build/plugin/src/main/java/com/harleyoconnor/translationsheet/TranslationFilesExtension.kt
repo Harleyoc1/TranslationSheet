@@ -23,4 +23,5 @@ abstract class TemplateExtension @Inject constructor(project: Project) {
     val outputFile: RegularFileProperty = objects.fileProperty().convention(
         project.layout.buildDirectory.file(DEFAULT_OUTPUT_FILE)
     )
+
 }

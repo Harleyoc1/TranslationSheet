@@ -47,4 +47,5 @@ class TranslationSheetPluginTest {
         assertEquals("just-a-message", task.message.get())
         assertEquals(aFile, task.outputFile.get().asFile)
     }
+
 }

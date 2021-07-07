@@ -40,4 +40,5 @@ abstract class GenerateFilesTask : DefaultTask() {
 
         outputFile.get().asFile.writeText("$prettyTag ${message.get()}")
     }
+
 }

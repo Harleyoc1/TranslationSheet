@@ -30,6 +30,7 @@ allprojects {
         outputToConsole.set(true)
         ignoreFailures.set(false)
         enableExperimentalRules.set(true)
+        disabledRules.set(setOf("no-blank-line-before-rbrace"))
         filter {
             exclude("**/generated/**")
             include("**/kotlin/**")
