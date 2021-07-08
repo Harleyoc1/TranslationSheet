@@ -1,6 +1,7 @@
 package com.harleyoconnor.translationsheet
 
-import com.harleyoconnor.translationsheet.extension.mkdirs
+import com.harleyoconnor.translationsheet.extension.createDirs
+import com.harleyoconnor.translationsheet.extension.createFile
 import com.harleyoconnor.translationsheet.generation.format.ConfiguredFormat
 import com.harleyoconnor.translationsheet.generation.format.Format
 import com.harleyoconnor.translationsheet.generation.format.FormattingConfig
@@ -19,14 +20,10 @@ abstract class TranslationSheetPlugin : Plugin<Project> {
 
         // Add a task that uses configuration from the extension object
         project.tasks.register(TASK_NAME, GenerateFilesTask::class.java) {
-            // If directories don't exist, create them.
-            extension.tokensDirectory.orNull?.mkdirs()
-            extension.outputDirectory.orNull?.mkdirs()
-
-            it.credentialsFile.set(extension.credentialsFile)
-            it.tokensDirectory.set(extension.tokensDirectory)
+            it.credentialsFile.set(extension.credentialsFile.createFile())
+            it.tokensDirectory.set(extension.tokensDirectory.createDirs())
             it.sheetId.set(extension.sheetId)
-            it.outputDirectory.set(extension.outputDirectory)
+            it.outputDirectory.set(extension.outputDirectory.createDirs())
             it.configuredFormat = extension.configuredFormat as ConfiguredFormat<Format, FormattingConfig>
         }
     }
