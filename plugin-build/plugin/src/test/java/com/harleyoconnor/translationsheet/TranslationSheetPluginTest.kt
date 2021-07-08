@@ -4,14 +4,11 @@ import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
-import java.io.File
 
 class TranslationSheetPluginTest {
 
     companion object {
         const val ID = "com.harleyoconnor.translationsheet"
-        const val EXTENSION_NAME = "translationFilesGeneration"
-        const val TASK_NAME = "generateTranslationFiles"
     }
 
     @Test
@@ -32,20 +29,17 @@ class TranslationSheetPluginTest {
 
     @Test
     fun `parameters are passed correctly from extension to task`() {
-//        val project = ProjectBuilder.builder().build()
-//        project.pluginManager.apply(ID)
-//        val aFile = File(project.projectDir, ".tmp")
-//        (project.extensions.getByName(EXTENSION_NAME) as TranslationFilesExtension).apply {
-//            tag.set("a-sample-tag")
-//            message.set("just-a-message")
-//            outputFile.set(aFile)
-//        }
-//
-//        val task = project.tasks.getByName(TASK_NAME) as GenerateFilesTask
-//
-//        assertEquals("a-sample-tag", task.tag.get())
-//        assertEquals("just-a-message", task.message.get())
-//        assertEquals(aFile, task.outputFile.get().asFile)
+        val project = ProjectBuilder.builder().build()
+        project.pluginManager.apply(ID)
+        (project.extensions.getByName(EXTENSION_NAME) as TranslationFilesExtension).apply {
+            sheetId.set("sheetid")
+            outputDirectory.set(project.projectDir)
+        }
+
+        val task = project.tasks.getByName(TASK_NAME) as GenerateFilesTask
+
+        assertEquals("sheetid", task.sheetId.get())
+        assertEquals(project.projectDir, task.outputDirectory.get().asFile)
     }
 
 }
