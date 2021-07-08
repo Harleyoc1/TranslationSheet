@@ -8,6 +8,10 @@ dependencies {
     implementation(kotlin("stdlib-jdk7"))
     implementation(gradleApi())
 
+    implementation(Lib.GOOGLE_API_CLIENT)
+    implementation(Lib.GOOGLE_OAUTH_CLIENT)
+    implementation(Lib.GOOGLE_SHEETS_API)
+
     testImplementation(TestingLib.JUNIT)
 }
 

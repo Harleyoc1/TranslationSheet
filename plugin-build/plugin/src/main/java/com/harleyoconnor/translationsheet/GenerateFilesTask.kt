@@ -1,44 +1,57 @@
 package com.harleyoconnor.translationsheet
 
+import com.harleyoconnor.translationsheet.generation.format.ConfiguredFormat
+import com.harleyoconnor.translationsheet.generation.format.Format
+import com.harleyoconnor.translationsheet.generation.format.FormattingConfig
+import com.harleyoconnor.translationsheet.generation.format.getGenerator
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*
 import org.gradle.api.tasks.options.Option
 
-abstract class GenerateFilesTask : DefaultTask() {
+abstract class GenerateFilesTask: DefaultTask() {
 
     init {
-        description = "Just a sample template task"
+        description = "Generates translation files from Google Sheets document."
 
         // Don't forget to set the group here.
         // group = BasePlugin.BUILD_GROUP
     }
 
-    @get:Input
-    @get:Option(option = "message", description = "A message to be printed in the output file")
-    abstract val message: Property<String>
+    @get:InputFile
+    @get:Option(option = "credentialsFile", description = "The Json file the OAuth credentials are stored in.")
+    abstract val credentialsFile: RegularFileProperty
+
+    @get:InputDirectory
+    @get:Option(option = "tokensDirectory", description = "The directory to store tokens in.")
+    abstract val tokensDirectory: DirectoryProperty
 
     @get:Input
-    @get:Option(option = "tag", description = "A Tag to be used for debug and in the output file")
-    @get:Optional
-    abstract val tag: Property<String>
+    @get:Option(option = "sheetId", description = "The ID of the spreadsheet to generate from.")
+    abstract val sheetId: Property<String>
 
-    @get:OutputFile
-    abstract val outputFile: RegularFileProperty
+    @get:Input
+    abstract var configuredFormat: ConfiguredFormat<Format, FormattingConfig>
+
+    @get:OutputDirectory
+    abstract val outputDirectory: DirectoryProperty
 
     @TaskAction
-    fun sampleAction() {
-        val prettyTag = tag.orNull?.let { "[$it]" } ?: ""
+    fun <F: Format> execute() {
+//        val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
+//        val credentials = credentials(this.credentialsFile.asFile.get(), this.tokensDirectory.get(), httpTransport)
 
-        logger.lifecycle("$prettyTag message is: ${message.orNull}")
-        logger.lifecycle("$prettyTag tag is: ${tag.orNull}")
-        logger.lifecycle("$prettyTag outputFile is: ${outputFile.orNull}")
+        val english = mapOf("example.key" to "Example Value")
 
-        outputFile.get().asFile.writeText("$prettyTag ${message.get()}")
+        getGenerator(configuredFormat).generate(
+            configuredFormat.config,
+            outputDirectory.file("en_us." + (this.configuredFormat.config.extension
+                ?: this.configuredFormat.format.getDefaultExtension())).get().asFile,
+            english
+        )
+
     }
 
 }
