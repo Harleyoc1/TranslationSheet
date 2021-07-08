@@ -36,11 +36,11 @@ jobs:
 
         # We do a run of the new task `generateTranslationFiles` created by the plugin
       - name: Run the plugin
-        run: ./gradlew generateTranslationFiles --message="Test Run" --tag=CI
+        run: ./gradlew generateTranslationFiles
         if: success()
         # And we verify that the output of the file is correct.
       - name: Verify the plugin output
-        run: grep -Fxq "[CI] Test Run" ./example/build/template-example.txt
+        run: grep -Fxq "[CI] Test Run" ./src/generated/resources/assets/modid/lang/en_us.json
         if: success()
 
       - name: Stop Gradle

@@ -15,7 +15,7 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
 
-abstract class GenerateFilesTask: DefaultTask() {
+abstract class GenerateFilesTask : DefaultTask() {
 
     init {
         description = "Generates translation files from Google Sheets document."
@@ -43,7 +43,7 @@ abstract class GenerateFilesTask: DefaultTask() {
     abstract val outputDirectory: DirectoryProperty
 
     @TaskAction
-    fun <F: Format> execute() {
+    fun execute() {
 //        val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
 //        val credentials = credentials(this.credentialsFile.asFile.get(), this.tokensDirectory.get(), httpTransport)
 
@@ -51,8 +51,12 @@ abstract class GenerateFilesTask: DefaultTask() {
 
         getGenerator(configuredFormat).generate(
             configuredFormat.config,
-            outputDirectory.file("en_us." + (this.configuredFormat.config.extension
-                ?: this.configuredFormat.format.getDefaultExtension())).get().asFile,
+            outputDirectory.file(
+                "en_us." + (
+                    this.configuredFormat.config.extension
+                        ?: this.configuredFormat.format.getDefaultExtension()
+                    )
+            ).get().asFile,
             english
         )
 
