@@ -6,7 +6,7 @@ import org.gradle.api.provider.Provider
 import java.io.File
 
 fun File.createDirs(): File {
-    this.mkdirs()
+    this.parentFile?.mkdirs()
     return this
 }
 
