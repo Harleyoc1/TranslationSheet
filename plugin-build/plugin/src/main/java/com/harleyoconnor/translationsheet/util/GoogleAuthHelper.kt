@@ -14,11 +14,13 @@ import java.io.File
 import java.io.InputStreamReader
 import java.nio.file.Files
 
+private const val PORT = 8888
 private val SCOPES = listOf(SheetsScopes.SPREADSHEETS_READONLY)
 
 fun credentials(credentialFile: File, tokensDirectory: Directory, httpTransport: NetHttpTransport): Credential {
     val credentialsStream = Files.newInputStream(credentialFile.toPath())
-    val clientSecrets: GoogleClientSecrets = GoogleClientSecrets.load(JacksonFactory.getDefaultInstance(), InputStreamReader(credentialsStream))
+    val clientSecrets: GoogleClientSecrets = GoogleClientSecrets.load(JacksonFactory.getDefaultInstance(),
+        InputStreamReader(credentialsStream))
 
     val flow: GoogleAuthorizationCodeFlow = GoogleAuthorizationCodeFlow.Builder(
         httpTransport, JacksonFactory.getDefaultInstance(), clientSecrets, SCOPES
@@ -26,6 +28,6 @@ fun credentials(credentialFile: File, tokensDirectory: Directory, httpTransport:
         .setDataStoreFactory(FileDataStoreFactory(tokensDirectory.asFile))
         .setAccessType("offline")
         .build()
-    val receiver: LocalServerReceiver = LocalServerReceiver.Builder().setPort(8888).build()
+    val receiver: LocalServerReceiver = LocalServerReceiver.Builder().setPort(PORT).build()
     return AuthorizationCodeInstalledApp(flow, receiver).authorize("user")
 }

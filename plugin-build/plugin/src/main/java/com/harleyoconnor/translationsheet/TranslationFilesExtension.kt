@@ -1,7 +1,11 @@
 package com.harleyoconnor.translationsheet
 
 import com.harleyoconnor.translationsheet.extension.mkdirs
-import com.harleyoconnor.translationsheet.generation.format.*
+import com.harleyoconnor.translationsheet.generation.format.ConfiguredFormat
+import com.harleyoconnor.translationsheet.generation.format.EmptyFormattingConfig
+import com.harleyoconnor.translationsheet.generation.format.Json
+import com.harleyoconnor.translationsheet.generation.format.JsonFormattingConfig
+import com.harleyoconnor.translationsheet.generation.format.Lang
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.file.DirectoryProperty

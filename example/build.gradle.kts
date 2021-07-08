@@ -1,5 +1,3 @@
-import com.harleyoconnor.translationsheet.extension.mkdirs
-
 plugins {
     java
     id("com.harleyoconnor.translationsheet")
