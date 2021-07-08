@@ -1,5 +1,6 @@
 package com.harleyoconnor.translationsheet
 
+import com.harleyoconnor.translationsheet.extension.mkdirs
 import com.harleyoconnor.translationsheet.generation.format.*
 import org.gradle.api.Action
 import org.gradle.api.Project
@@ -12,7 +13,7 @@ const val DEFAULT_CREDENTIALS_FILE = "credentials.json"
 const val DEFAULT_TOKENS_DIR = "tokens"
 
 @Suppress("UnnecessaryAbstractClass", "UNCHECKED_CAST")
-abstract class TranslationFilesExtension @Inject constructor(project: Project) {
+abstract class TranslationFilesExtension @Inject constructor(private val project: Project) {
 
     private val objects = project.objects
 
@@ -27,6 +28,16 @@ abstract class TranslationFilesExtension @Inject constructor(project: Project) {
     val sheetId: Property<String> = objects.property(String::class.java)
 
     val outputDirectory: DirectoryProperty = objects.directoryProperty()
+
+    /**
+     * Creates directory at given [path] if it does not already exist, setting the resulting
+     * directory to the [outputDirectory].
+     *
+     * @param path The path of the [outputDirectory], relative to the project directory.
+     */
+    fun outputDir(path: String) {
+        this.outputDirectory.set(project.layout.projectDirectory.dir(path).mkdirs())
+    }
 
     var configuredFormat: ConfiguredFormat<*, *> = ConfiguredFormat(Json, JsonFormattingConfig())
 

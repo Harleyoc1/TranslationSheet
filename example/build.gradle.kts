@@ -9,7 +9,7 @@ val modId: String = "modid"
 
 translationFilesGeneration {
     this.sheetId.set("")
-    this.outputDirectory.set(project.layout.projectDirectory.dir("src/generated/resources/assets/$modId/lang/").mkdirs())
+    this.outputDir("src/generated/resources/assets/$modId/lang/")
 
     // Demonstrate options to configure Json formatting.
     this.useJson {

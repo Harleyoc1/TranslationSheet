@@ -11,7 +11,7 @@ interface Format: Serializable {
     fun getDefaultExtension(): String
 }
 
-abstract class AbstractFormat(private val identifier: String, private val extensions: Array<String>): Format {
+abstract class AbstractFormat(private val identifier: String, private val extensions: Array<String>) : Format {
     override fun getIdentifier(): String = this.identifier
     override fun getExtensions(): Array<String> = this.extensions
     override fun getDefaultExtension(): String = this.extensions[0]
