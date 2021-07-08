@@ -5,7 +5,7 @@ import java.io.Serializable
 /**
  * @author Harley O'Connor
  */
-class ConfiguredFormat<F: Format, FC: FormattingConfig> (val format: F, val config: FC) : Serializable {
+class ConfiguredFormat<F : Format, FC : FormattingConfig> (val format: F, val config: FC) : Serializable {
     companion object {
         private const val serialVersionUID = -99L
     }

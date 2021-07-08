@@ -5,7 +5,7 @@ import com.harleyoconnor.translationsheet.generation.JsonFileGenerator
 import com.harleyoconnor.translationsheet.generation.LangFileGenerator
 import java.io.Serializable
 
-interface Format: Serializable {
+interface Format : Serializable {
     fun getIdentifier(): String
     fun getExtensions(): Array<String>
     fun getDefaultExtension(): String
@@ -17,9 +17,9 @@ abstract class AbstractFormat(private val identifier: String, private val extens
     override fun getDefaultExtension(): String = this.extensions[0]
 }
 
-object Json: AbstractFormat("Json", arrayOf("json"))
+object Json : AbstractFormat("Json", arrayOf("json"))
 
-object Lang: AbstractFormat("Lang", arrayOf("lang"))
+object Lang : AbstractFormat("Lang", arrayOf("lang"))
 
 val FORMAT_GENERATORS: Map<Format, FileGenerator<*>> = mapOf(
     Json to JsonFileGenerator,
@@ -27,6 +27,6 @@ val FORMAT_GENERATORS: Map<Format, FileGenerator<*>> = mapOf(
 )
 
 @Suppress("UNCHECKED_CAST")
-fun <F: Format, FC: FormattingConfig> getGenerator(configuredFormat: ConfiguredFormat<F, FC>): FileGenerator<FC> {
+fun <F : Format, FC : FormattingConfig> getGenerator(configuredFormat: ConfiguredFormat<F, FC>): FileGenerator<FC> {
     return FORMAT_GENERATORS[configuredFormat.format] as FileGenerator<FC>
 }

@@ -6,7 +6,7 @@ import java.io.File
 /**
  * @author Harley O'Connor
  */
-object LangFileGenerator: FileGenerator<EmptyFormattingConfig> {
+object LangFileGenerator : FileGenerator<EmptyFormattingConfig> {
 
     override fun generate(config: EmptyFormattingConfig, outFile: File, translationMap: Map<String, String>) {
         val writer = outFile.writer()

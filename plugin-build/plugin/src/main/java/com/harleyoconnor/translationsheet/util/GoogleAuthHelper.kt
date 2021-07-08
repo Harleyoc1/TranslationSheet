@@ -19,11 +19,16 @@ private val SCOPES = listOf(SheetsScopes.SPREADSHEETS_READONLY)
 
 fun credentials(credentialFile: File, tokensDirectory: Directory, httpTransport: NetHttpTransport): Credential {
     val credentialsStream = Files.newInputStream(credentialFile.toPath())
-    val clientSecrets: GoogleClientSecrets = GoogleClientSecrets.load(JacksonFactory.getDefaultInstance(),
-        InputStreamReader(credentialsStream))
+    val clientSecrets: GoogleClientSecrets = GoogleClientSecrets.load(
+        JacksonFactory.getDefaultInstance(),
+        InputStreamReader(credentialsStream)
+    )
 
     val flow: GoogleAuthorizationCodeFlow = GoogleAuthorizationCodeFlow.Builder(
-        httpTransport, JacksonFactory.getDefaultInstance(), clientSecrets, SCOPES
+        httpTransport,
+        JacksonFactory.getDefaultInstance(),
+        clientSecrets,
+        SCOPES
     )
         .setDataStoreFactory(FileDataStoreFactory(tokensDirectory.asFile))
         .setAccessType("offline")

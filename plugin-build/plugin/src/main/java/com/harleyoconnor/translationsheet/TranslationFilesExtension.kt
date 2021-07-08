@@ -46,7 +46,7 @@ abstract class TranslationFilesExtension @Inject constructor(private val project
     var configuredFormat: ConfiguredFormat<*, *> = ConfiguredFormat(Json, JsonFormattingConfig())
 
     fun useJson() {
-        configuredFormat = ConfiguredFormat(Json, JsonFormattingConfig());
+        configuredFormat = ConfiguredFormat(Json, JsonFormattingConfig())
     }
 
     fun useJson(action: Action<JsonFormattingConfig>) {
