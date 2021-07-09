@@ -3,7 +3,6 @@ package com.harleyoconnor.translationsheet
 import com.harleyoconnor.translationsheet.generation.format.ConfiguredFormat
 import com.harleyoconnor.translationsheet.generation.format.Format
 import com.harleyoconnor.translationsheet.generation.format.FormattingConfig
-import com.harleyoconnor.translationsheet.generation.format.getGenerator
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
@@ -49,7 +48,7 @@ abstract class GenerateFilesTask : DefaultTask() {
 
         val english = mapOf("example.key" to "Example Value")
 
-        getGenerator(configuredFormat).generate(
+        configuredFormat.generator.generate(
             configuredFormat.config,
             outputDirectory.file(
                 "en_us." + (

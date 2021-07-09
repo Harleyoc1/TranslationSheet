@@ -60,7 +60,10 @@ abstract class TranslationFilesExtension @Inject constructor(private val project
         }
     }
 
-    fun useJson(action: Action<JsonFormattingConfig>, generator: TriAction<JsonFormattingConfig, File, Map<String, String>>) {
+    fun useJson(
+        action: Action<JsonFormattingConfig>,
+        generator: TriAction<JsonFormattingConfig, File, Map<String, String>>
+    ) {
         val format = JsonFormattingConfig()
         action.execute(format)
 
