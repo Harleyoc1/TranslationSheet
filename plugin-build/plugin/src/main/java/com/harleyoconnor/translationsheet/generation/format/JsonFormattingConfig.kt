@@ -7,6 +7,10 @@ import com.google.common.base.Strings.repeat
  */
 class JsonFormattingConfig : FormattingConfig() {
 
+    companion object {
+        private const val serialVersionUID = -67L
+    }
+
     lateinit var tabSpace: String
     var trailingComma: Boolean = false
     var separator: String = ": "
