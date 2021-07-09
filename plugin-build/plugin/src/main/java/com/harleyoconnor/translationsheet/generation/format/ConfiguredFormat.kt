@@ -2,6 +2,7 @@ package com.harleyoconnor.translationsheet.generation.format
 
 import com.harleyoconnor.translationsheet.generation.FileGenerator
 import java.io.File
+import java.io.Serializable
 
 /**
  * @author Harley O'Connor
@@ -10,8 +11,10 @@ class ConfiguredFormat<F : Format, FC : FormattingConfig> (
     val format: F,
     val config: FC,
     val generator: FileGenerator<FC>
-) {
+) : Serializable {
     companion object {
+        private const val serialVersionUID = -29L
+
         fun <F : Format, FC : FormattingConfig> create(
             format: F,
             config: FC,

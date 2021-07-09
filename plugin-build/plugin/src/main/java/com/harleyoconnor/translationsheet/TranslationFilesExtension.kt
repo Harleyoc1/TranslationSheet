@@ -9,12 +9,12 @@ import com.harleyoconnor.translationsheet.generation.format.EmptyFormattingConfi
 import com.harleyoconnor.translationsheet.generation.format.Json
 import com.harleyoconnor.translationsheet.generation.format.JsonFormattingConfig
 import com.harleyoconnor.translationsheet.generation.format.Lang
+import com.harleyoconnor.translationsheet.util.SerializableTriConsumer
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
-import org.gradle.internal.TriAction
 import java.io.File
 import javax.inject.Inject
 
@@ -55,20 +55,20 @@ abstract class TranslationFilesExtension @Inject constructor(private val project
     }
 
     fun useJson(action: Action<JsonFormattingConfig>) {
-        this.useJson(action) { config, outputFile, translationMap ->
-            JsonFileGenerator.generate(config, outputFile, translationMap)
-        }
+        val format = JsonFormattingConfig()
+        action.execute(format)
+        configuredFormat = ConfiguredFormat(Json, format, JsonFileGenerator)
     }
 
     fun useJson(
         action: Action<JsonFormattingConfig>,
-        generator: TriAction<JsonFormattingConfig, File, Map<String, String>>
+        generator: SerializableTriConsumer<JsonFormattingConfig, File, Map<String, String>>
     ) {
         val format = JsonFormattingConfig()
         action.execute(format)
 
         configuredFormat = ConfiguredFormat.create(Json, format) { config, outputFile, translationMap ->
-            generator.execute(config, outputFile, translationMap)
+            generator.accept(config, outputFile, translationMap)
         }
     }
 

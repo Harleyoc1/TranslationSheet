@@ -36,14 +36,10 @@ abstract class GenerateFilesTask : DefaultTask() {
     abstract val sheetId: Property<String>
 
     @get:Input
-    abstract val configuredFormatIndex: Property<Int>
+    abstract var configuredFormat: ConfiguredFormat<Format, FormattingConfig>
 
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
-
-    private fun getConfiguredFormat(): ConfiguredFormat<Format, FormattingConfig> {
-        return CONFIGURED_FORMATS[configuredFormatIndex.get()]
-    }
 
     @TaskAction
     fun execute() {
@@ -51,8 +47,6 @@ abstract class GenerateFilesTask : DefaultTask() {
 //        val credentials = credentials(this.credentialsFile.asFile.get(), this.tokensDirectory.get(), httpTransport)
 
         val english = mapOf("example.key" to "Example Value")
-
-        val configuredFormat = getConfiguredFormat()
 
         configuredFormat.generator.generate(
             configuredFormat.config,
