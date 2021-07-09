@@ -10,6 +10,10 @@ import java.io.Serializable
 @FunctionalInterface
 interface FileGenerator<FC : FormattingConfig> : Serializable {
 
+    companion object {
+        private const val serialVersionUID = -79L
+    }
+
     fun generate(config: FC, outputFile: File, translationMap: Map<String, String>)
 
 }

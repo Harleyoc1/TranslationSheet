@@ -10,8 +10,10 @@ translationFilesGeneration {
     this.outputDir("src/generated/resources/assets/$modId/lang/")
 
     // Demonstrate options to configure Json formatting.
-    this.useJson {
+    this.useJson({
         this.tabSpaces(4)
         this.separator = " : "
-    }
+    }, { config, outputFile, translationMap ->
+
+    })
 }

@@ -11,6 +11,8 @@ import org.gradle.api.Project
 const val EXTENSION_NAME = "translationFilesGeneration"
 const val TASK_NAME = "generateTranslationFiles"
 
+val CONFIGURED_FORMATS = mutableListOf<ConfiguredFormat<Format, FormattingConfig>>()
+
 @Suppress("UNCHECKED_CAST")
 abstract class TranslationSheetPlugin : Plugin<Project> {
 
@@ -20,11 +22,13 @@ abstract class TranslationSheetPlugin : Plugin<Project> {
 
         // Add a task that uses configuration from the extension object
         project.tasks.register(TASK_NAME, GenerateFilesTask::class.java) {
+            CONFIGURED_FORMATS.add(extension.configuredFormat as ConfiguredFormat<Format, FormattingConfig>)
+
             it.credentialsFile.set(extension.credentialsFile.createFile())
             it.tokensDirectory.set(extension.tokensDirectory.createDirs())
             it.sheetId.set(extension.sheetId)
             it.outputDirectory.set(extension.outputDirectory.createDirs())
-            it.configuredFormat = extension.configuredFormat as ConfiguredFormat<Format, FormattingConfig>
+            it.configuredFormatIndex.set(CONFIGURED_FORMATS.size - 1)
         }
     }
 
