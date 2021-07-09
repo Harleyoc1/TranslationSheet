@@ -6,8 +6,9 @@ import java.io.File
 /**
  * @author Harley O'Connor
  */
+@FunctionalInterface
 interface FileGenerator<FC : FormattingConfig> {
 
-    fun generate(config: FC, outFile: File, translationMap: Map<String, String>)
+    fun generate(config: FC, outputFile: File, translationMap: Map<String, String>)
 
 }

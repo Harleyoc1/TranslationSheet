@@ -1,6 +1,9 @@
 package com.harleyoconnor.translationsheet
 
 import com.harleyoconnor.translationsheet.extension.mkdirs
+import com.harleyoconnor.translationsheet.generation.FileGenerator
+import com.harleyoconnor.translationsheet.generation.JsonFileGenerator
+import com.harleyoconnor.translationsheet.generation.LangFileGenerator
 import com.harleyoconnor.translationsheet.generation.format.ConfiguredFormat
 import com.harleyoconnor.translationsheet.generation.format.EmptyFormattingConfig
 import com.harleyoconnor.translationsheet.generation.format.Json
@@ -11,6 +14,8 @@ import org.gradle.api.Project
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
+import org.gradle.internal.TriAction
+import java.io.File
 import javax.inject.Inject
 
 const val DEFAULT_CREDENTIALS_FILE = "credentials.json"
@@ -43,20 +48,33 @@ abstract class TranslationFilesExtension @Inject constructor(private val project
         this.outputDirectory.set(project.layout.projectDirectory.dir(path).mkdirs())
     }
 
-    var configuredFormat: ConfiguredFormat<*, *> = ConfiguredFormat(Json, JsonFormattingConfig())
+    var configuredFormat: ConfiguredFormat<*, *> = ConfiguredFormat(Json, JsonFormattingConfig(), JsonFileGenerator)
 
     fun useJson() {
-        configuredFormat = ConfiguredFormat(Json, JsonFormattingConfig())
+        configuredFormat = ConfiguredFormat(Json, JsonFormattingConfig(), JsonFileGenerator)
     }
 
     fun useJson(action: Action<JsonFormattingConfig>) {
+        this.useJson(action) { config, outputFile, translationMap ->
+            JsonFileGenerator.generate(config, outputFile, translationMap)
+        }
+    }
+
+    fun useJson(action: Action<JsonFormattingConfig>, generator: TriAction<JsonFormattingConfig, File, Map<String, String>>) {
         val format = JsonFormattingConfig()
         action.execute(format)
-        configuredFormat = ConfiguredFormat(Json, format)
+
+        configuredFormat = ConfiguredFormat.create(Json, format) { config, outputFile, translationMap ->
+            generator.execute(config, outputFile, translationMap)
+        }
     }
 
     fun useLang() {
-        configuredFormat = ConfiguredFormat(Lang, EmptyFormattingConfig)
+        this.useLang(LangFileGenerator)
+    }
+
+    fun useLang(generator: FileGenerator<EmptyFormattingConfig>) {
+        configuredFormat = ConfiguredFormat(Lang, EmptyFormattingConfig, generator)
     }
 
 }

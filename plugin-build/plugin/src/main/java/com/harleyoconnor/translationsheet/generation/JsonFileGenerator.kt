@@ -9,19 +9,21 @@ import java.io.File
  */
 object JsonFileGenerator : FileGenerator<JsonFormattingConfig> {
 
-    override fun generate(config: JsonFormattingConfig, outFile: File, translationMap: Map<String, String>) {
-        val writer = outFile.writer()
+    override fun generate(config: JsonFormattingConfig, outputFile: File, translationMap: Map<String, String>) {
+        val writer = outputFile.writer()
         writer.write("{\n")
 
-        translationMap.forEachLast { (key, value), isLast ->
-            writer.write(
-                "${config.tabSpace}\"$key\"${config.separator}\"$value\"" +
-                    (if (!isLast || config.trailingComma) "," else "") + "\n"
-            )
+        translationMap.forEachLast { entry, isLast ->
+            writer.write(this.getLine(config, entry, isLast))
         }
 
         writer.write("}")
         writer.close()
+    }
+
+    private fun getLine(config: JsonFormattingConfig, entry: Map.Entry<String, String>, isLast: Boolean): String {
+        return "${config.tabSpace}\"${entry.key}\"${config.separator}\"${entry.value}\"" +
+            (if (!isLast || config.trailingComma) "," else "") + "\n"
     }
 
 }

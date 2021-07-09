@@ -8,8 +8,8 @@ import java.io.File
  */
 object LangFileGenerator : FileGenerator<EmptyFormattingConfig> {
 
-    override fun generate(config: EmptyFormattingConfig, outFile: File, translationMap: Map<String, String>) {
-        val writer = outFile.writer()
+    override fun generate(config: EmptyFormattingConfig, outputFile: File, translationMap: Map<String, String>) {
+        val writer = outputFile.writer()
 
         translationMap.forEach { (key, value) ->
             writer.write("$key=$value")
