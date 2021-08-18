@@ -3,14 +3,13 @@ plugins {
     id("com.harleyoconnor.translationsheet")
 }
 
-val modId: String = "modid"
+translationSheet {
+    this.sheetId.set("1Zcq9RbptxAmcbg6om-ue1tQY-TD7mOefaDXN8biQW0g")
+    this.sectionPattern.set("Dynamic Trees")
+    this.outputDir("src/generated/resources/assets/dynamictrees/lang/")
 
-translationFilesGeneration {
-    this.sheetId.set("")
-    this.outputDir("src/generated/resources/assets/$modId/lang/")
-
-    // Demonstrate options to configure Json formatting.
     this.useJson {
+        // Demonstrate options to configure Json formatting.
         this.tabSpaces(4)
         this.separator = " : "
     }

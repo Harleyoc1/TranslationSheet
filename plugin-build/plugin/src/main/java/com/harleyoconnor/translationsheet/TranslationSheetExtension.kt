@@ -38,6 +38,8 @@ abstract class TranslationFilesExtension @Inject constructor(private val project
 
     val outputDirectory: DirectoryProperty = objects.directoryProperty()
 
+    val sectionPattern: Property<String> = objects.property(String::class.java)
+
     /**
      * Creates directory at given [path] if it does not already exist, setting the resulting
      * directory to the [outputDirectory].

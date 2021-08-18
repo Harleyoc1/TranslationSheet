@@ -8,7 +8,7 @@ import com.harleyoconnor.translationsheet.generation.format.FormattingConfig
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-const val EXTENSION_NAME = "translationFilesGeneration"
+const val EXTENSION_NAME = "translationSheet"
 const val TASK_NAME = "generateTranslationFiles"
 
 @Suppress("UNCHECKED_CAST")
@@ -24,6 +24,7 @@ abstract class TranslationSheetPlugin : Plugin<Project> {
             it.tokensDirectory.set(extension.tokensDirectory.createDirs())
             it.sheetId.set(extension.sheetId)
             it.outputDirectory.set(extension.outputDirectory.createDirs())
+            it.sectionPattern.set(extension.sectionPattern.get())
             it.configuredFormat = extension.configuredFormat as ConfiguredFormat<Format, FormattingConfig>
         }
     }

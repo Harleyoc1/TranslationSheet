@@ -40,7 +40,7 @@ jobs:
         if: success()
         # And we verify that the output of the file is correct.
       - name: Verify the plugin output
-        run: grep -eq ./example/src/generated/resources/assets/modid/lang/en_us.json
+        run: grep -Fxq ./example/src/generated/resources/assets/dynamictrees/lang/en_us.json
         if: success()
 
       - name: Stop Gradle
