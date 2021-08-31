@@ -8,7 +8,7 @@ object PluginCoordinates {
 object PluginBundle {
     const val VCS = "https://github.com/Harleyoc1/TranslationSheet"
     const val WEBSITE = "https://github.com/Harleyoc1/TranslationSheet"
-    const val DESCRIPTION = "A gradle plugin for generating translation files from a Google Sheets document"
+    const val DESCRIPTION = "A gradle plugin for generating translation files from a Google Sheets document."
     const val DISPLAY_NAME = "TranslationSheet"
     val TAGS = listOf(
         "plugin",
