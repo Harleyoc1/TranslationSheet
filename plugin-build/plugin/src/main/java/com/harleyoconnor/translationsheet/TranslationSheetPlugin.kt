@@ -23,6 +23,7 @@ abstract class TranslationSheetPlugin : Plugin<Project> {
             it.credentialsFile.set(extension.credentialsFile.createFile())
             it.tokensDirectory.set(extension.tokensDirectory.createDirs())
             it.sheetId.set(extension.sheetId)
+            it.primaryLang.set(extension.primaryLang)
             it.outputDirectory.set(extension.outputDirectory.createDirs())
             it.sectionColour.set(extension.sectionColour.get())
             it.sectionPattern.set(extension.sectionPattern.get())

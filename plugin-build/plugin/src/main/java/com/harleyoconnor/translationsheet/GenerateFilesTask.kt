@@ -56,6 +56,10 @@ abstract class GenerateFilesTask : DefaultTask() {
     abstract val sheetId: Property<String>
 
     @get:Input
+    @get:Option(option = "primaryLang", description = "The primary language. This language will not have a file generated.")
+    abstract val primaryLang: Property<String>
+
+    @get:Input
     abstract var configuredFormat: ConfiguredFormat<Format, FormattingConfig>
 
     @get:OutputDirectory
@@ -77,7 +81,7 @@ abstract class GenerateFilesTask : DefaultTask() {
         // Gather the language IDs.
         val languageIds = sheetsService
             .getAsList(this.sheetId.get(), "2:2")
-            .filter { LANGUAGE_ID_PATTERN.matcher(it).matches() }
+            .filter { LANGUAGE_ID_PATTERN.matcher(it).matches() && this.primaryLang.get() != it }
         // Gather data about the section.
         val sectionData = this.getSectionData(sheetsService)
         // Gather the translation keys.
@@ -157,19 +161,19 @@ abstract class GenerateFilesTask : DefaultTask() {
         (gridData[0]["rowData"] as ArrayList<RowData>)
             .forEach {
                 val cellData = (it["values"] as ArrayList<CellData>)[0]
-
                 val cellColour = (cellData["effectiveFormat"] as CellFormat)["backgroundColor"] as Color
-                val sectionColour = this.sectionColour.get().mapIfLessThan(0xFFFFFF00) { sectionColour ->
-                    (sectionColour shl 8) or 0xFF
-                }
 
-                if (cellColour.toLong() == sectionColour) {
+                if (cellColour.toLong() == this.getSectionColour()) {
                     separators[(cellData["effectiveValue"] as ExtendedValue).stringValue] = i
                 }
                 i++
             }
 
         return separators
+    }
+
+    private fun getSectionColour() = this.sectionColour.get().mapIfLessThan(0xFFFFFF00) { sectionColour ->
+        (sectionColour shl 8) or 0xFF
     }
 
     private fun readKeyColumn(sheetsService: Sheets): Spreadsheet {
