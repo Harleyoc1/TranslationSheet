@@ -1,19 +1,9 @@
 package com.harleyoconnor.translationsheet
 
-import com.google.api.services.sheets.v4.model.Color
-import com.harleyoconnor.translationsheet.extension.toLong
-import org.junit.Test
-
 class TranslationSheetPluginTest {
 
     companion object {
         const val ID = "com.harleyoconnor.translationsheet"
-    }
-
-    @Test
-    fun `test Color#toInt()`() {
-        assert(Color().setRed(249F / 256F).setGreen(203F / 256F).setBlue(156F / 256F).setAlpha(256F).toLong()
-                == 4190870783)
     }
 
 //    @Test
