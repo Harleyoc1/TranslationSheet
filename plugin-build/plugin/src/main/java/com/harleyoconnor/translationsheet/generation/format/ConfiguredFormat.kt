@@ -19,17 +19,24 @@ class ConfiguredFormat<F : Format, FC : FormattingConfig> (
             format: F,
             config: FC,
             generator: (FC, File, Map<String, String>) -> Unit
-        ):
-            ConfiguredFormat<F, FC> {
-                return ConfiguredFormat(
-                    format,
-                    config,
-                    object : FileGenerator<FC> {
-                        override fun generate(config: FC, outputFile: File, translationMap: Map<String, String>) {
-                            generator.invoke(config, outputFile, translationMap)
-                        }
+        ): ConfiguredFormat<F, FC> {
+            return ConfiguredFormat(
+                format,
+                config,
+                object : FileGenerator<FC> {
+                    override fun generate(config: FC, outputFile: File, translationMap: Map<String, String>) {
+                        generator.invoke(config, outputFile, translationMap)
                     }
-                )
-            }
+                }
+            )
+        }
+    }
+
+    fun generate(outputFile: File, translationMap: Map<String, String>) {
+        this.generator.generate(this.config, outputFile, translationMap)
+    }
+
+    fun extensionOrDefault(): String {
+        return this.config.extension ?: this.format.getDefaultExtension()
     }
 }

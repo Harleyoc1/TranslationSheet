@@ -9,10 +9,11 @@ import com.google.api.services.sheets.v4.model.GridData
 import com.google.api.services.sheets.v4.model.RowData
 import com.google.api.services.sheets.v4.model.Sheet
 import com.google.api.services.sheets.v4.model.Spreadsheet
-import com.harleyoconnor.translationsheet.extension.equals
 import com.harleyoconnor.translationsheet.extension.fillTo
 import com.harleyoconnor.translationsheet.extension.getAsList
+import com.harleyoconnor.translationsheet.extension.mapIfLessThan
 import com.harleyoconnor.translationsheet.extension.removeIf
+import com.harleyoconnor.translationsheet.extension.toLong
 import com.harleyoconnor.translationsheet.generation.format.ConfiguredFormat
 import com.harleyoconnor.translationsheet.generation.format.Format
 import com.harleyoconnor.translationsheet.generation.format.FormattingConfig
@@ -27,6 +28,7 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
+import java.io.File
 import java.util.regex.Pattern
 
 abstract class GenerateFilesTask : DefaultTask() {
@@ -58,6 +60,10 @@ abstract class GenerateFilesTask : DefaultTask() {
     @get:OutputDirectory
     @get:Option(option = "outputDirectory", description = "The directory to output the generated language files to.")
     abstract val outputDirectory: DirectoryProperty
+
+    @get:Input
+    @get:Option(option = "sectionColour", description = "The colour of the section separator cell.")
+    abstract val sectionColour: Property<Long>
 
     @get:Input
     @get:Option(option = "sectionPattern", description = "The pattern to match the section name against.")
@@ -129,21 +135,11 @@ abstract class GenerateFilesTask : DefaultTask() {
         )
     }
 
-    private fun generate(
-        languageId: String,
-        translationMap: MutableMap<String, String>
-    ) {
-        configuredFormat.generator.generate(
-            configuredFormat.config,
-            outputDirectory.file(
-                "$languageId." + (
-                    configuredFormat.config.extension
-                        ?: configuredFormat.format.getDefaultExtension()
-                    )
-            ).get().asFile,
-            translationMap
-        )
-    }
+    private fun generate(languageId: String, translationMap: MutableMap<String, String>) =
+        this.configuredFormat.generate(this.getOutputFile(languageId), translationMap)
+
+    private fun getOutputFile(languageId: String): File =
+        this.outputDirectory.file("$languageId.${this.configuredFormat.extensionOrDefault()}").get().asFile
 
     private fun asColumn(i: Int): String {
         // TODO: Make this work for indices greater than 26.
@@ -160,9 +156,13 @@ abstract class GenerateFilesTask : DefaultTask() {
         (gridData[0]["rowData"] as ArrayList<RowData>)
             .forEach {
                 val cellData = (it["values"] as ArrayList<CellData>)[0]
-                if (((cellData["effectiveFormat"] as CellFormat)["backgroundColor"] as Color)
-                    .equals(249F / 256F, 203F / 256F, 156F / 256F)
-                ) {
+
+                val cellColour = (cellData["effectiveFormat"] as CellFormat)["backgroundColor"] as Color
+                val sectionColour = this.sectionColour.get().mapIfLessThan(0xFFFFFF00) { sectionColour ->
+                    (sectionColour shl 8) or 0xFF
+                }
+
+                if (cellColour.toLong() == sectionColour) {
                     separators[(cellData["effectiveValue"] as ExtendedValue).stringValue] = i
                 }
                 i++

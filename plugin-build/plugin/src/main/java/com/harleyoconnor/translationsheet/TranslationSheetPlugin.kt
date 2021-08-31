@@ -24,6 +24,7 @@ abstract class TranslationSheetPlugin : Plugin<Project> {
             it.tokensDirectory.set(extension.tokensDirectory.createDirs())
             it.sheetId.set(extension.sheetId)
             it.outputDirectory.set(extension.outputDirectory.createDirs())
+            it.sectionColour.set(extension.sectionColour.get())
             it.sectionPattern.set(extension.sectionPattern.get())
             it.configuredFormat = extension.configuredFormat as ConfiguredFormat<Format, FormattingConfig>
         }

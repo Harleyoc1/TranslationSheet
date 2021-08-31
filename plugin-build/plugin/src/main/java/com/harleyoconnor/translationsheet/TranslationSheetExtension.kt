@@ -38,6 +38,8 @@ abstract class TranslationFilesExtension @Inject constructor(private val project
 
     val outputDirectory: DirectoryProperty = objects.directoryProperty()
 
+    val sectionColour: Property<Long> = objects.property(Long::class.java)
+
     val sectionPattern: Property<String> = objects.property(String::class.java)
 
     /**

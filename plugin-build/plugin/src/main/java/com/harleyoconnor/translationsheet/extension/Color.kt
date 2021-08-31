@@ -1,11 +1,11 @@
 package com.harleyoconnor.translationsheet.extension
 
 import com.google.api.services.sheets.v4.model.Color
+import kotlin.math.roundToLong
 
-fun Color.equals(red: Float = 1F, green: Float = 1F, blue: Float = 1F, alpha: Float = 1F): Boolean {
-    // Color is stupid.
-    return (this.red.toInt() * 256) == (red.toInt() * 256) &&
-        (this.green.toInt() * 256) == (green.toInt() * 256) &&
-        (this.blue.toInt() * 256) == (blue.toInt() * 256) &&
-        ((this.alpha ?: 1).toInt() * 256) == (alpha.toInt() * 256)
+fun Color.toLong(): Long {
+    return  ((((this.red   ?: 1F) * 0xFF).roundToLong() and 0xFF) shl 24) or
+            ((((this.green ?: 1F) * 0xFF).roundToLong() and 0xFF) shl 16) or
+            ((((this.blue  ?: 1F) * 0xFF).roundToLong() and 0xFF) shl  8) or
+            (((this.alpha  ?: 1F) * 0xFF).roundToLong() and 0xFF)
 }
