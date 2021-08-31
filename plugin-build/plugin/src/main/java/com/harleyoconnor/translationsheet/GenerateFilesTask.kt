@@ -30,6 +30,7 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
 import java.io.File
 import java.util.regex.Pattern
+import java.util.stream.Collectors
 
 abstract class GenerateFilesTask : DefaultTask() {
 
@@ -102,7 +103,7 @@ abstract class GenerateFilesTask : DefaultTask() {
         return mutableMapOf(
             *keys.stream()
                 .map { it to values[i++] }
-                .toList()
+                .collect(Collectors.toList())
                 .toTypedArray()
         ).removeIf { _, value ->
             value.isEmpty()
