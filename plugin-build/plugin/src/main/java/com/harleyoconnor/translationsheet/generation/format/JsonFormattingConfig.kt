@@ -11,16 +11,16 @@ class JsonFormattingConfig : FormattingConfig() {
         private const val serialVersionUID = -67L
     }
 
-    lateinit var tabSpace: String
+    lateinit var indentation: String
     var trailingComma: Boolean = false
     var separator: String = ": "
 
     init {
-        tabSpaces(2)
+        this.indentation(2)
     }
 
-    fun tabSpaces(number: Int) {
-        this.tabSpace = repeat(" ", number)
+    fun indentation(number: Int) {
+        this.indentation = repeat(" ", number)
     }
 
 }

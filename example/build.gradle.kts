@@ -11,7 +11,7 @@ translationSheet {
 
     this.useJson {
         // Demonstrate options to configure Json formatting.
-        this.tabSpaces(4)
+        this.indentation(4)
         this.separator = " : "
     }
 }
