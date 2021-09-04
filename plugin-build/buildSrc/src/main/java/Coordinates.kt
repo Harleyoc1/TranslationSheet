@@ -1,7 +1,7 @@
 object PluginCoordinates {
     const val ID = "com.harleyoconnor.translationsheet"
     const val GROUP = "com.harleyoconnor.translationsheet"
-    const val VERSION = "0.1.0"
+    const val VERSION = "0.1.1"
     const val IMPLEMENTATION_CLASS = "com.harleyoconnor.translationsheet.TranslationSheetPlugin"
 }
 
