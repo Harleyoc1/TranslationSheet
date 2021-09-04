@@ -22,7 +22,7 @@ object JsonFileGenerator : FileGenerator<JsonFormattingConfig> {
     }
 
     private fun getLine(config: JsonFormattingConfig, entry: Map.Entry<String, String>, isLast: Boolean): String {
-        return "${config.tabSpace}\"${entry.key}\"${config.separator}\"${entry.value}\"" +
+        return "${config.indentation}\"${entry.key}\"${config.separator}\"${entry.value}\"" +
             (if (!isLast || config.trailingComma) "," else "") + "\n"
     }
 
