@@ -81,7 +81,7 @@ abstract class GenerateFilesTask : DefaultTask() {
         // Gather the language IDs.
         val languageIds = sheetsService
             .getAsList(this.sheetId.get(), "2:2")
-            .filter { LANGUAGE_ID_PATTERN.matcher(it).matches() && this.primaryLang.get() != it }
+            .filter { LANGUAGE_ID_PATTERN.matcher(it).matches() }
         // Gather data about the section.
         val sectionData = this.getSectionData(sheetsService)
         // Gather the translation keys.
@@ -89,7 +89,10 @@ abstract class GenerateFilesTask : DefaultTask() {
 
         var column = 3
         languageIds.forEach { languageId ->
-            this.generate(languageId, this.getTranslationMap(sheetsService, this.asColumn(column++), sectionData, keys))
+            this.generate(
+                languageId,
+                this.getTranslationMap(sheetsService, this.asColumn(column++), sectionData, keys)
+            )
         }
     }
 
@@ -140,8 +143,11 @@ abstract class GenerateFilesTask : DefaultTask() {
         )
     }
 
-    private fun generate(languageId: String, translationMap: MutableMap<String, String>) =
-        this.configuredFormat.generate(this.getOutputFile(languageId), translationMap)
+    private fun generate(languageId: String, translationMap: MutableMap<String, String>) {
+        if (languageId != this.primaryLang.get()) {
+            this.configuredFormat.generate(this.getOutputFile(languageId), translationMap)
+        }
+    }
 
     private fun getOutputFile(languageId: String): File =
         this.outputDirectory.file("$languageId.${this.configuredFormat.extensionOrDefault()}").get().asFile
