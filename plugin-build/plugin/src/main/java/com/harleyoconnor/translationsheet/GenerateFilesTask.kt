@@ -17,6 +17,7 @@ import com.harleyoconnor.translationsheet.extension.toLong
 import com.harleyoconnor.translationsheet.generation.format.ConfiguredFormat
 import com.harleyoconnor.translationsheet.generation.format.Format
 import com.harleyoconnor.translationsheet.generation.format.FormattingConfig
+import com.harleyoconnor.translationsheet.util.Column
 import com.harleyoconnor.translationsheet.util.getSheetsService
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
@@ -36,7 +37,6 @@ abstract class GenerateFilesTask : DefaultTask() {
 
     companion object {
         val LANGUAGE_ID_PATTERN: Pattern = Pattern.compile("[a-z]{2}_[a-z]{2}")
-        private const val ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     }
 
     init {
@@ -87,18 +87,19 @@ abstract class GenerateFilesTask : DefaultTask() {
         // Gather the translation keys.
         val keys = sheetsService.getAsList(this.sheetId.get(), "A${sectionData.startRow}:A${sectionData.endRow}")
 
-        var column = 3
+        val column = Column("C")
         languageIds.forEach { languageId ->
             this.generate(
                 languageId,
-                this.getTranslationMap(sheetsService, this.asColumn(column++), sectionData, keys)
+                this.getTranslationMap(sheetsService, column, sectionData, keys)
             )
+            column.increment()
         }
     }
 
     private fun getTranslationMap(
         sheetsService: Sheets,
-        column: String,
+        column: Column,
         sectionData: SectionData,
         keys: MutableList<String>
     ): MutableMap<String, String> {
@@ -151,11 +152,6 @@ abstract class GenerateFilesTask : DefaultTask() {
 
     private fun getOutputFile(languageId: String): File =
         this.outputDirectory.file("$languageId.${this.configuredFormat.extensionOrDefault()}").get().asFile
-
-    private fun asColumn(i: Int): String {
-        // TODO: Make this work for indices greater than 26.
-        return ALPHABET[i - 1].toString()
-    }
 
     @Suppress("UNCHECKED_CAST")
     private fun getSections(sheetsService: Sheets): Map<String, Int> {
