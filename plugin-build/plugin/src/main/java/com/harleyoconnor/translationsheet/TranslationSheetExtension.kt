@@ -1,6 +1,5 @@
 package com.harleyoconnor.translationsheet
 
-import com.harleyoconnor.translationsheet.extension.mkdirs
 import com.harleyoconnor.translationsheet.generation.FileGenerator
 import com.harleyoconnor.translationsheet.generation.JsonFileGenerator
 import com.harleyoconnor.translationsheet.generation.LangFileGenerator
@@ -84,16 +83,6 @@ abstract class TranslationFilesExtension @Inject constructor(private val project
      * @see [sectionColour]
      */
     val sectionPattern: Property<String> = objects.property(String::class.java)
-
-    /**
-     * Creates directory at given [path] if it does not already exist, setting the resulting
-     * directory to the [outputDirectory].
-     *
-     * @param path The path of the [outputDirectory], relative to the project directory.
-     */
-    fun outputDir(path: String) {
-        this.outputDirectory.set(project.layout.projectDirectory.dir(path).mkdirs())
-    }
 
     /**
      * The configured format to generate by.

@@ -76,6 +76,9 @@ abstract class GenerateFilesTask : DefaultTask() {
 
     @TaskAction
     fun execute() {
+        // Create directories for output, in case they do not already exist
+        outputDirectory.get().asFile.mkdirs()
+
         val sheetsService = getSheetsService(this.credentialsFile.asFile.get(), this.tokensDirectory.get())
 
         // Gather the language IDs.
